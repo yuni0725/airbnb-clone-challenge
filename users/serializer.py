@@ -11,4 +11,14 @@ class TinyUserSerializers(ModelSerializer):
 class UserSerializers(ModelSerializer):
     class Meta:
         model = User
-        exclude = ("password",)
+        exclude = (
+            "password",
+            "is_superuser",
+            "id",
+            "is_staff",
+            "is_active",
+            "first_name",
+            "last_name",
+            "groups",
+            "user_permissions",
+        )
