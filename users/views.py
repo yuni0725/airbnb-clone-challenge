@@ -33,23 +33,6 @@ class AllUser(APIView):
             return Response(serializer.errors)
 
 
-class ChangePassword(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def put(self, request):
-        user = request.user
-        old_password = request.data.get("old_password")
-        new_password = request.data.get("new_password")
-        if not old_password or not new_password:
-            raise exceptions.ParseError
-        if user.check_password(old_password):
-            user.set_password(new_password)
-            user.save()
-            return Response(status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 class DetailUser(APIView):
     def get_object(self, pk):
         all_user = User.objects.get(pk=pk)
@@ -98,3 +81,20 @@ class Logout(APIView):
     def post(self, request):
         logout(request)
         return Response({"ok": "bye!"})
+
+
+class ChangePassword(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        user = request.user
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
+        if not old_password or not new_password:
+            raise exceptions.ParseError
+        if user.check_password(old_password):
+            user.set_password(new_password)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
